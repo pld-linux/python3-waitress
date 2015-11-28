@@ -6,7 +6,7 @@
 Summary:	Waitress WSGI server
 Name:		python-%{module}
 Version:	0.8.2
-Release:	1
+Release:	2
 License:	ZPL 2.1
 Group:		Libraries/Python
 Source0:	http://pypi.python.org/packages/source/w/waitress/%{module}-%{version}.tar.gz
