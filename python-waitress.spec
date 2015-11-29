@@ -14,7 +14,7 @@ Source0:	http://pypi.python.org/packages/source/w/waitress/%{module}-%{version}.
 URL:		http://docs.pylonsproject.org/projects/waitress/
 BuildRequires:	python-distribute
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.710
 Requires:	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
