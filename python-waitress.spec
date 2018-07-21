@@ -10,7 +10,7 @@ Summary:	Waitress WSGI server
 Summary(pl.UTF-8):	Serwer WSGI Waitress
 Name:		python-%{module}
 Version:	1.1.0
-Release:	1
+Release:	2
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/waitress/
@@ -29,7 +29,7 @@ BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
 BuildRequires:	sphinx-pdg-3
-BuildRequires:	python-pylons-sphinx-themes >= 0.3
+BuildRequires:	python3-pylons-sphinx-themes >= 0.3
 %endif
 Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
@@ -86,7 +86,7 @@ Dokumentacja API modułu Pythona waitress.
 %if %{with doc}
 PYTHONPATH=$(pwd) \
 %{__make} -C docs html \
-	SPHINXBUILD=sphinx-build-2
+	SPHINXBUILD=sphinx-build-3
 %endif
 
 %install
