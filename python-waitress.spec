@@ -9,13 +9,13 @@
 Summary:	Waitress WSGI server
 Summary(pl.UTF-8):	Serwer WSGI Waitress
 Name:		python-%{module}
-Version:	1.1.0
-Release:	3
+Version:	1.4.1
+Release:	1
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/waitress/
 Source0:	https://files.pythonhosted.org/packages/source/w/waitress/%{module}-%{version}.tar.gz
-# Source0-md5:	0f1eb7fdfdbf2e6d18decbda1733045c
+# Source0-md5:	e6b9f0406cb4e6fedcc3add96411786d
 URL:		https://docs.pylonsproject.org/projects/waitress/
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
@@ -29,7 +29,9 @@ BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
 BuildRequires:	sphinx-pdg-3
-BuildRequires:	python3-pylons-sphinx-themes >= 0.3
+# >= 1.8.1
+BuildRequires:	python3-docutils
+BuildRequires:	python3-pylons-sphinx-themes >= 1.0.9
 %endif
 Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
@@ -76,11 +78,19 @@ Dokumentacja API modułu Pythona waitress.
 
 %build
 %if %{with python2}
-%py_build %{?with_tests:test}
+%py_build
+
+%if %{with tests}
+%{__python} -m unittest discover -s waitress/tests
+%endif
 %endif
 
 %if %{with python3}
-%py3_build %{?with_tests:test}
+%py3_build
+
+%if %{with tests}
+%{__python3} -m unittest discover -s waitress/tests
+%endif
 %endif
 
 %if %{with doc}
