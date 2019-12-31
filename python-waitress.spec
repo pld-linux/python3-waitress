@@ -73,6 +73,8 @@ Dokumentacja API modułu Pythona waitress.
 %prep
 %setup -q -n %{module}-%{version}
 
+# 3 tests require IPv6
+%{__mv} %{module}/tests/test_adjustments.py{,.disable}
 # gives tcp connect errors
 %{__mv} %{module}/tests/test_functional.py{,.disable}
 
