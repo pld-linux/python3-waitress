@@ -10,7 +10,7 @@ Summary:	Waitress WSGI server
 Summary(pl.UTF-8):	Serwer WSGI Waitress
 Name:		python-%{module}
 Version:	1.4.1
-Release:	2
+Release:	3
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/waitress/
