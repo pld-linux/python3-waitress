@@ -9,27 +9,27 @@
 Summary:	Waitress WSGI server
 Summary(pl.UTF-8):	Serwer WSGI Waitress
 Name:		python-%{module}
-Version:	1.4.1
-Release:	4
+# keep 1.x here for python2 support
+Version:	1.4.4
+Release:	1
 License:	ZPL v2.1
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/waitress/
 Source0:	https://files.pythonhosted.org/packages/source/w/waitress/%{module}-%{version}.tar.gz
-# Source0-md5:	e6b9f0406cb4e6fedcc3add96411786d
+# Source0-md5:	079c3c4902b1cb5d0a917276ee70f1df
 URL:		https://docs.pylonsproject.org/projects/waitress/
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
-BuildRequires:	python-setuptools
+BuildRequires:	python-setuptools >= 1:41
 %endif
 %if %{with python3}
-BuildRequires:	python3-modules >= 1:3.3
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-modules >= 1:3.5
+BuildRequires:	python3-setuptools >= 1:41
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
-BuildRequires:	sphinx-pdg-3
-# >= 1.8.1
+BuildRequires:	sphinx-pdg-3 >= 1.8.1
 BuildRequires:	python3-docutils
 BuildRequires:	python3-pylons-sphinx-themes >= 1.0.9
 %endif
@@ -49,7 +49,7 @@ produkcyjnej jakości i akceptowalnej wydajności.
 Summary:	Waitress WSGI server
 Summary(pl.UTF-8):	Serwer WSGI Waitress
 Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.3
+Requires:	python3-modules >= 1:3.5
 
 %description -n python3-%{module}
 Waitress is meant to be a production-quality pure-Python WSGI server
@@ -73,17 +73,13 @@ Dokumentacja API modułu Pythona waitress.
 %prep
 %setup -q -n %{module}-%{version}
 
-# 3 tests require IPv6
-%{__mv} %{module}/tests/test_adjustments.py{,.disable}
-# gives tcp connect errors
-%{__mv} %{module}/tests/test_functional.py{,.disable}
-
 %build
 %if %{with python2}
 %py_build
 
 %if %{with tests}
-%{__python} -m unittest discover -s waitress/tests
+PYTHONPATH=$(pwd)/src \
+%{__python} -m unittest discover -s tests
 %endif
 %endif
 
@@ -91,12 +87,13 @@ Dokumentacja API modułu Pythona waitress.
 %py3_build
 
 %if %{with tests}
-%{__python3} -m unittest discover -s waitress/tests
+PYTHONPATH=$(pwd)/src \
+%{__python3} -m unittest discover -s tests
 %endif
 %endif
 
 %if %{with doc}
-PYTHONPATH=$(pwd) \
+PYTHONPATH=$(pwd)/src \
 %{__make} -C docs html \
 	SPHINXBUILD=sphinx-build-3
 %endif
@@ -109,7 +106,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/waitress-serve{,-2}
 
-%{__rm} -r $RPM_BUILD_ROOT%{py_sitescriptdir}/%{module}/tests
 %py_postclean
 %endif
 
@@ -117,8 +113,6 @@ rm -rf $RPM_BUILD_ROOT
 %py3_install
 
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/waitress-serve{,-3}
-
-%{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/%{module}/tests
 %endif
 
 %clean
@@ -127,7 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.txt COPYRIGHT.txt HISTORY.txt LICENSE.txt README.rst TODO.txt
+%doc CHANGES.txt COPYRIGHT.txt HISTORY.txt LICENSE.txt README.rst
 %attr(755,root,root) %{_bindir}/waitress-serve-2
 %{py_sitescriptdir}/waitress
 %{py_sitescriptdir}/waitress-%{version}-py*.egg-info
@@ -136,7 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc CHANGES.txt COPYRIGHT.txt HISTORY.txt LICENSE.txt README.rst TODO.txt
+%doc CHANGES.txt COPYRIGHT.txt HISTORY.txt LICENSE.txt README.rst
 %attr(755,root,root) %{_bindir}/waitress-serve-3
 %{py3_sitescriptdir}/waitress
 %{py3_sitescriptdir}/waitress-%{version}-py*.egg-info
